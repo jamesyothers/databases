@@ -135,22 +135,30 @@ module.exports.api = function (req, res) {
 module.exports.handler = function(req, res) {
   console.log('Serving request type ' + req.method + ' for url ' + req.url);
 
-  var asset = path.join(__dirname, 'client', url.parse(req.url).pathname);
-  fs.exists(asset, function (exists) {
-    console.log('Exists?');
-    if (exists) {
-      console.log('Exists!!!');
-      headers['Content-Type'] = mimeTypes[asset.split('.').reverse()[0]];
-      console.log(asset, ': ', headers['Content-Type']);
-      res.writeHead(200, headers);
-      var readStream = fs.createReadStream(asset);
-      readStream.pipe(res);
-    } else {
-      console.log('API!');
-      // API
-      module.exports.api(req, res);
-    }
-  });
+  if (req.url === '/') {
+    var newHeaders = Object.create(headers);
+    newHeaders['Location'] = 'http://localhost:3000/index.html';
+    res.writeHead(301, newHeaders);
+    res.end('redirecting...');
+  } else {
+    var asset = path.join(__dirname, 'client', url.parse(req.url).pathname);
+    fs.exists(asset, function (exists) {
+      console.log('Exists?');
+      if (exists) {
+        console.log('Exists!!!');
+        headers['Content-Type'] = mimeTypes[asset.split('.').reverse()[0]];
+        console.log(asset, ': ', headers['Content-Type']);
+        res.writeHead(200, headers);
+        var readStream = fs.createReadStream(asset);
+        readStream.pipe(res);
+      } else {
+        console.log('API!');
+        // API
+        module.exports.api(req, res);
+      }
+    });
+  }
+
 };
 
 var headers = {
