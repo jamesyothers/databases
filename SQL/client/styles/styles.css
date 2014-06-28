@@ -1,0 +1,96 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,800,600);
+
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+html, button, input, select, textarea,
+.pure-g [class *= "pure-u"],
+.pure-g-r [class *= "pure-u"] {
+  font: 300 16px/1.7 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+body {
+  background: #eee;
+  padding: 0.2em;
+}
+
+@media only screen and (min-width: 480px) {
+  body {
+    padding: 1em;
+  }
+}
+
+h1 {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -3px;
+}
+
+input {
+  display: block;
+  width: 100%;
+  margin-bottom: 3px;
+}
+
+ul {
+  padding: 0;
+}
+
+li {
+  background: #fff;
+  border: 1px solid #ccc;
+  box-shadow: #ccc 0px 2px 2px 0px;
+  padding: 1em;
+  margin: 0.5em 0;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
+li .username {
+  font-weight: 600;
+  display: block;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 5px;
+}
+
+li .time {
+  color: #ccc;
+  display: block;
+  float: right;
+  font-size: 13px;
+}
+
+li {
+  -webkit-animation: highlight 2s;
+          animation: highlight 2s;
+  list-style: none;
+  min-height: 100px;
+}
+
+/**
+ * Animation in order to highlight new tweets
+ * Used this at a previous project:
+ * https://github.com/alexanderGugel/Odin/blob/master/static/css/main.css
+ */
+
+@keyframes highlight {
+  from {
+    border: 1px solid #b9d3ed;
+  }
+  to {
+    border: 1px solid #ccc;
+  }
+}
+
+@-webkit-keyframes highlight {
+  from {
+    border: 1px solid #b9d3ed;
+  }
+  to {
+    border: 1px solid #ccc;
+  }
+}
