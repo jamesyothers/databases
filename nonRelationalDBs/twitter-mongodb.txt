@@ -1,0 +1,35 @@
+> db twitter
+Sat Jun 28 17:41:52.313 SyntaxError: Unexpected identifier
+> use twitter
+switched to db twitter
+> show dbs
+local 0.078125GB
+mydb  0.203125GB
+> use twitter
+switched to db twitter
+> show dbs
+local 0.078125GB
+mydb  0.203125GB
+> use twitter
+switched to db twitter
+> db.users.insert({handle: 'anton', password: 'pass'})
+
+>
+> db.users.insert({handle: 'marcus', password: 'pass'})
+> db.users.insert({handle: 'joe', password: 'pass'})
+> db.users.insert({handle: 'mracus', password: 'pass'})
+>
+> db.users.find()
+{ "_id" : ObjectId("53af634019c0e1ce2f2ce600"), "handle" : "anton", "password" : "pass" }
+{ "_id" : ObjectId("53af634819c0e1ce2f2ce601"), "handle" : "marcus", "password" : "pass" }
+{ "_id" : ObjectId("53af634f19c0e1ce2f2ce602"), "handle" : "joe", "password" : "pass" }
+{ "_id" : ObjectId("53af636019c0e1ce2f2ce603"), "handle" : "mracus", "password" : "pass" }
+>
+> db.tweets.insert({handle: ObjectId("53af634019c0e1ce2f2ce600"), message: 'hello alex'})
+> db.tweets.find()
+{ "_id" : ObjectId("53af649619c0e1ce2f2ce604"), "handle" : ObjectId("53af634019c0e1ce2f2ce600"), "message" : "hello alex" }
+> db.tweets.insert({handle: ObjectId("53af634019c0e1ce2f2ce600"), message: 'hello james'})
+> db.tweets.insert({handle: ObjectId("53af634019c0e1ce2f2ce600"), message: 'hello world'})
+> db.tweets.insert({handle: ObjectId("53af634019c0e1ce2f2ce600"), message: 'pizzzzzzzzzzzzzza!'})
+> db.users.insert({handle: 'cat', password: 'pass', follows: [ObjectId("53af634019c0e1ce2f2ce600"), ObjectId("53af636019c0e1ce2f2ce603")]})
+>
