@@ -23,6 +23,8 @@ var mimeTypes = {
   // TODO JS
 };
 
+// this is the callback to our server creation
+// we will be serving up all the files for the client to operate
 module.exports.handler = function(request, response) {
   /* the 'request' argument comes from nodes http module. It includes info about the
   request - such as what URL the browser is requesting. */
@@ -31,18 +33,26 @@ module.exports.handler = function(request, response) {
    * http://nodemanual.org/0.8.14/nodejs_ref_guide/http.html */
 
   console.log('Serving request type ' + request.method + ' for url ' + request.url);
-
+  // take existence of room and room information from the url
   var isRoom = request.url.split('/')[1] === 'classes';
   var room = request.url.split('/')[2];
 
+  // determine the path to the file to read
   var asset = path.join(__dirname, '../client', req.url);
+  // determine if the file exists at the given path
   fs.exists(asset, function (exists) {
     console.log('Exists?')
     if (exists) {
-      console.log('Exists!!!')
+      console.log('Exists!!!');
+      // set the content type to the extnsion of the given file
+      // augment headers with the content type
       headers['Content-Type'] = mimeTypes[asset.split('.').reverse()[0]];
+      // repare the response
       res.writeHead(200, headers);
+      // setup the readStream from the individual files at 'asset' path
       var readStream = fs.createReadStream(asset);
+      // pass all the files to the browser via pipe
+      // 'pipe' automatically ends the response
       readStream.pipe(res);
     } else {
       ///

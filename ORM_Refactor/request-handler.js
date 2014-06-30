@@ -1,26 +1,50 @@
 var fs = require('fs'),
     path = require('path'),
     url = require('url');
-
+// sequelize was installed on the command line with:
+// npm install sequelize
+// http://sequelizejs.com/articles/getting-started#introduction
+// require the Sequelize SQL ORM
 var Sequelize = require("sequelize");
+// initialize sequelize with name of database, username, and password
 var sequelize = new Sequelize("chatterbox", "root", "");
 
+// create tables
+// createdAt and updatedAt fields are created autmatically
+// table names will be set to the plural of each string entered in definitions
+// i.e. this first table will be the users table
 var User = sequelize.define('User', {
   username: Sequelize.STRING
 });
 
+// define the messages table:
 var Message = sequelize.define('Message', {
   text: Sequelize.STRING
 });
 
+// define the rooms table:
 var Room = sequelize.define('Room', {
   roomName: Sequelize.STRING
 });
 
+// set up relationships
 Room.hasMany(Message);
 User.hasMany(Message);
 
+// schema management in Sequelize is done by the sync method or by migrations
+// migrations is the way to go for more robust systems and designs
+// we will use the automated sync method here
 sequelize.sync();
+
+// example program:
+// sequelize.sync({ force: true }).complete(function(err) {
+//   User.create({ username: 'john', password: '1111' }).complete(function(err, user1) {
+//     User.find({ username: 'john' }).complete(function(err, user2) {
+//       console.log(user1.values, user2.values)
+//     })
+//   })
+// })
+// {force: tru} will remove all existing tables and re-create them afterwards
 
 // use mimeTypes for serving up of different types of files
 var mimeTypes = {
@@ -133,7 +157,7 @@ module.exports.api = function (req, res) {
       });
     });
   } else if (req.method === 'GET') {
-    var query = 'SELECT messages.id AS objectId, messages.text, messages.createdAt, users.username FROM messages JOIN users ON users.id = messages.UserId WHERE messages.RoomId = (SELECT id FROM rooms WHERE roomName = "' + room + '") ORDER BY messages.createdAt DESC'
+    var query = 'SELECT messages.id AS objectId, messages.text, messages.createdAt, users.username FROM messages JOIN users ON users.id = messages.UserId WHERE messages.RoomId = (SELECT id FROM rooms WHERE roomName = "' + room + '") ORDER BY messages.createdAt DESC';
 
     // set raw: true and 'null' as second argument bc we don't have a model definition in our query
     // we have changed the column names to match the client's expectations
